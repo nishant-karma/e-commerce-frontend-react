@@ -12,6 +12,7 @@ function AddProducts(){
         productPrice:"",
     });
 
+    const [imageFile, setImageFile] = useState(null);
     const navigate = useNavigate();
 
      const handleChange = (e) => {
@@ -21,12 +22,15 @@ function AddProducts(){
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+
+  const handleSubmit =  async (e) => {
     e.preventDefault();
 
-    // Optional: Validate
-    if (!formData.productName || !formData.productPrice || !formData.productType) {
-      alert("Please fill all required fields.");
+    if (!formData.productName || !formData.productPrice || !formData.productType  || !imageFile) {
+      alert("Please fill all required fields and select an image");
       return;
     }
 
@@ -36,17 +40,23 @@ function AddProducts(){
       productPrice: Number(formData.productPrice),
     };
 
-    addProduct(payload)
-      .then(() => {
+    const form = new FormData();
+    form.append("productDTO", JSON.stringify(payload));
+    form.append("imageFile", imageFile);
 
-        alert("Product added successfully!");
-        navigate("/"); // ✅ redirect to Home
-      })
-      .catch(err => {
-        console.error("Error adding product:", err);
-        alert("Something went wrong.");
-      });
-  };
+
+    try{
+      await addProduct(form);
+      alert('Product added!');
+      navigate("/");
+    }
+    catch(err){
+      console.error("uplad failed:", err);
+      alert("Faliled to add product");
+
+
+    }
+    };
 
   return (
     <div>
@@ -86,6 +96,8 @@ function AddProducts(){
           <option value="CLOTHING">CLOTHING</option>
           <option value="BEAUTY">BEAUTY</option>
         </select><br />
+
+        <input type="file" accept="image/*" onChange={handleImageChange} /><br />
 
         <button type="submit">Add</button>
       </form>
