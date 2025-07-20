@@ -3,19 +3,19 @@ import { addProduct } from "../services/api";
 
 import { useNavigate } from "react-router-dom";
 
-function AddProducts(){
+function AddProducts() {
 
-    const [formData, setFormData] = useState({
-        productName:"",
-        productDescription:"",
-        productType:"",
-        productPrice:"",
-    });
+  const [formData, setFormData] = useState({
+    productName: "",
+    productDescription: "",
+    productType: "",
+    productPrice: "",
+  });
 
-    const [imageFile, setImageFile] = useState(null);
-    const navigate = useNavigate();
+  const [imageFile, setImageFile] = useState(null);
+  const navigate = useNavigate();
 
-     const handleChange = (e) => {
+  const handleChange = (e) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
@@ -26,10 +26,10 @@ function AddProducts(){
     setImageFile(e.target.files[0]);
   };
 
-  const handleSubmit =  async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.productName || !formData.productPrice || !formData.productType  || !imageFile) {
+    if (!formData.productName || !formData.productPrice || !formData.productType || !imageFile) {
       alert("Please fill all required fields and select an image");
       return;
     }
@@ -45,18 +45,18 @@ function AddProducts(){
     form.append("imageFile", imageFile);
 
 
-    try{
+    try {
       await addProduct(form);
       alert('Product added!');
       navigate("/");
     }
-    catch(err){
+    catch (err) {
       console.error("uplad failed:", err);
       alert("Faliled to add product");
 
 
     }
-    };
+  };
 
   return (
     <div>

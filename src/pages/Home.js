@@ -1,10 +1,16 @@
-
 import React, { useEffect, useState } from "react";
 import ProductList from "../components/ProductList";
-import { getProducts } from "../services/api";
+import SearchBar from "../components/SearchBar"; // assuming you move SearchBar.jsx to components
+import { getProducts, searchProducts } from "../services/api";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const [filters, setFilters] = useState({
+    keyword: "",
+    type: "",
+    minPrice: "",
+    maxPrice: "",
+  });
 
   useEffect(() => {
     getProducts()
@@ -12,19 +18,28 @@ const Home = () => {
         if (Array.isArray(res.data)) {
           setProducts(res.data);
         } else {
-          console.error("Response data is not an array", res.data);
           setProducts([]);
         }
       })
-      .catch((err) => {
-        console.error("Failed to fetch products", err);
-        setProducts([]);
-      });
+      .catch(() => setProducts([]));
   }, []);
 
+  const handleSearch = () => {
+    searchProducts(filters)
+      .then((res) => {
+        if (Array.isArray(res.data)) {
+          setProducts(res.data);
+        } else {
+          setProducts([]);
+        }
+      })
+      .catch(() => setProducts([]));
+  };
+
   return (
-    <div>
-      <h1 className="text-center mt-4">All Products</h1>
+    <div className="container mt-4">
+      <h1 className="text-center">All Products</h1>
+      <SearchBar filters={filters} setFilters={setFilters} onSearch={handleSearch} />
       <ProductList products={products} />
     </div>
   );

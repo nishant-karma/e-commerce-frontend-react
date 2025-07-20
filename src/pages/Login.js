@@ -29,7 +29,7 @@ const Login = () => {
 
       // Store token in cookie
       login(res.data.token); // use context to login
- // 1 day
+      // 1 day
 
       setMessage("Login successful!");
       setTimeout(() => navigate("/"), 1000); // Redirect to homepage

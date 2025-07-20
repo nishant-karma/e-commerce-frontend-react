@@ -1,8 +1,8 @@
-import axios  from "axios";
+import axios from "axios";
 import Cookies from "js-cookie";
 
 const API = axios.create({
-    baseURL:"http://localhost:7070/api",
+  baseURL: "http://localhost:7070/api",
 
 });
 
@@ -49,7 +49,20 @@ export const verifyOtp = (data) => API.post("/verify", data);
 export const loginUser = (credentials) => API.post("/login", credentials);
 
 
-export const getProducts = ()=> API.get("/product/all");
-export const addProduct = (formData) => API.post("/product/add",formData);
+export const getProducts = () => API.get("/product/all");
+export const addProduct = (formData) =>
+  API.post("/product/add", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+export const getMyProducts = () => API.get("/product/myproducts");
+export const searchProducts = (params) =>
+  API.get("/product/products/search", { params });
+
+export const getProductById = (id) => API.get(`/product/${id}`);
+
+
 
 export default API;

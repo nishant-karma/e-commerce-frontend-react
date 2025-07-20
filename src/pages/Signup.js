@@ -38,29 +38,29 @@ const Signup = () => {
   };
 
   const handleOtpSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const payload = {
-      email: user.email,
-      otp: parseInt(otp),
-      user: user,
-    };
+    e.preventDefault();
+    try {
+      const payload = {
+        email: user.email,
+        otp: parseInt(otp),
+        user: user,
+      };
 
-    const res = await verifyOtp(payload);
-    setMessage("Registration successful! Redirecting to login...");
-    setShowOtpField(false);
+      const res = await verifyOtp(payload);
+      setMessage("Registration successful! Redirecting to login...");
+      setShowOtpField(false);
 
-    // Clear form
-    setUser({ firstName: "", lastName: "", email: "", password: "", role: "USER" });
-    setOtp("");
+      // Clear form
+      setUser({ firstName: "", lastName: "", email: "", password: "", role: "USER" });
+      setOtp("");
 
-    // Redirect after short delay
-    setTimeout(() => navigate("/login"), 1000);
-  } catch (err) {
-    console.error(err);
-    setMessage("OTP verification failed. Please try again.");
-  }
-};
+      // Redirect after short delay
+      setTimeout(() => navigate("/login"), 1000);
+    } catch (err) {
+      console.error(err);
+      setMessage("OTP verification failed. Please try again.");
+    }
+  };
 
 
   return (

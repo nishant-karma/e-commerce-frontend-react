@@ -6,6 +6,10 @@ import { useAuth } from "../context/AuthContext";
 const Navbar = () => {
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const isAdmin = user?.roles?.some(role => role.authority === "ADMIN");
+  console.log("User info:", user);
+
 
   const handleLogout = () => {
     logout();
@@ -35,6 +39,11 @@ const Navbar = () => {
                 <Link className="nav-link" to="/login">Login</Link>
               </li>
             </>
+          )}
+          {isAdmin && (
+            <li className="nav-item">
+              <Link to="/my-products" className="nav-link">My Products</Link>
+            </li>
           )}
         </ul>
       </div>
